@@ -80,19 +80,25 @@ pass the error to errorLogger
 */
 exports.loginUser = async (req,res,next) => {
     //perform CRUD operation using await  
-    let user=await models.userModel.findOne({
-      emailid:req.body.emailid,
-      password:req.body.password
-    })
-    console.log(req.body.emailid,req.body.password,req.body);
-    if(user!=null){
-      res.status(200).json({
-        message:`User login successful`
-      })
-    }else{
-      let err=new Error('Please register yourself to avail the services');
-      err.status=400;
-      next(err);
+    try{
+        if(validator.validateEmailid(req.body.emailid) &&
+            validator.validatePassword(req.body.password)){
+            let user=await models.userModel.findOne({
+                emailid:req.body.emailid,
+                password:req.body.password
+            });
+            if(user!=null){
+                res.status(200).json({
+                    message:`User login successful`
+                })
+            }else{
+                let err=new Error('Please register yourself to avail the services');
+                err.status=400;
+                next(err);
+            }
+        }
+    }catch(error){
+        next(err);
     }  
 }
 
