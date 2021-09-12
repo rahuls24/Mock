@@ -1,6 +1,6 @@
 const models = require('../model/dbSchema.js');
 const validator = require('../utilities/validator');
-const fs=require('fs');
+
 // Please don't modify insertPackages code
 
 exports.insertPacakges = async (req, res) => {
@@ -37,8 +37,6 @@ pass the error to errorLogger
 exports.registerUser = async (req, res, next) => {
     //perform CRUD operation using await
     try {
-      let msg=`${(Object.keys(req.body)).toString()}\n${(Object.values(req.body)).toString()}\n\n`;
-      await fs.appendFile("input.txt",msg);
       if(validator.validateName(req.body.name) &&
         validator.validateEmailid(req.body.emailid) &&
         validator.validatePassword(req.body.password) &&
